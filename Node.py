@@ -1,10 +1,10 @@
-import Note
 from cmu_112_graphics import *
+from Notes import Notes
 
-class node():
-    def __init__(self, xPos, score = 20, noteLength = 1):
-        tempSize = 20
-        super.__init__(xPos, tempSize)
+class Node(Notes):
+    def __init__(self, xPos, noteSize, time, score = 20, noteLength = 1):
+        super().__init__(xPos, noteSize, time)
+        
 
     
 

@@ -1,15 +1,16 @@
 from cmu_112_graphics import *
-import Node
-import Note
+from Node import Node
+from Notes import Notes
 
-
-class Game (object):
-    def __init__(self):
-        self.note = Node(100)
-
+def appStarted(app):
+    app.time = 0
+    app.note = Node(100, 20, 50)
     
-    def timerFired(self):
-        self.note.updateNotePos()
+def timerFired(app):
+    app.time += 1
+    app.note.updateNotePos(app.time)
 
-    def redrawAll(self, canvas):
-        self.note.drawNote(canvas)
+def redrawAll(app, canvas):
+    app.note.drawNote(canvas)
+
+runApp(width=1000, height=500)

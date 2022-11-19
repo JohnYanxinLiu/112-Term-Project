@@ -1,21 +1,25 @@
 class Notes(object):
-    def __init__ (self, xPos, noteSize, score = 20, noteLength = 1):
+    def __init__ (self, xPos, noteSize, time, score = 20, noteLength = 1):
         self.x = xPos
         self.noteLength = noteLength
-        self.y = 0
+        self.y = -noteSize
         self.score = score
-        self.noteSize
+        self.noteSize = noteSize
+        self.noteTime = time
 
 
 #Function draws the note's current position
     def drawNote(self, canvas):
+        
         cx, cy = self.x, self.y
         r = self.noteSize
         canvas.create_oval(cx - r, cy - r, cx + r, cy + r, fill = 'red')
 
 
-    def updateNotePos(self):
-        self.y += 1
+    def updateNotePos(self, gameTime):
+        if gameTime >= self.noteTime:
+            self.y += 1
+
 
 #Function takes in player input and matches it with the note's x-position,
     def scoreNote(self, playerInput):
