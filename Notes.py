@@ -21,7 +21,7 @@ class Notes(object):
 
     def updateNotePos(self, gameTime):
         if gameTime >= self.noteTime:
-            self.y += 1
+            self.y += 5
 
 
 #Function takes in player input and matches it with the note's x-position,
