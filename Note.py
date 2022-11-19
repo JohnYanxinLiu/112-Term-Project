@@ -1,14 +1,17 @@
 class Notes(object):
-    def __init__ (self, xPos, score = 20, noteLength = 1):
+    def __init__ (self, xPos, noteSize, score = 20, noteLength = 1):
         self.x = xPos
         self.noteLength = noteLength
         self.y = 0
         self.score = score
+        self.noteSize
 
 
 #Function draws the note's current position
     def drawNote(self, canvas):
         cx, cy = self.x, self.y
+        r = self.noteSize
+        canvas.create_oval(cx - r, cy - r, cx + r, cy + r, fill = 'red')
 
 
     def updateNotePos(self):
