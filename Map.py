@@ -18,7 +18,7 @@ class Map(object):
         self.boardCoords = [(margin + i * cellWidth) for i in range(Map.numCells+1)]
 
         skip = 0
-        self.notesMap = [Node(100, 20, 15, 20), Slider(200, 20, 5, 5, 10), Jump(0, 20, 30, 30)]
+        self.notesMap = [Node(100, 20, 15, 2, app), Slider(200, 20, 5, 2, app, 10), Jump(0, 20, 10, 2, app)]
 
     def randomNote(self):
         noteType = random.randint(1,3)
@@ -30,17 +30,19 @@ class Map(object):
             return Jump(attribute)
         if noteType == 3:
             return Slider(attribute)
-
-#TODO Change this to use an image instead
+    
+    #TODO Change this to use an image instead
     def drawGame(self, canvas):
         self.drawBackground(canvas)
         self.drawBoard(canvas)
 
+#Currently draws the simple purple background of the game TODO Change to actual game background
     def drawBackground(self, canvas):
         x0, x1 = 0, self.width
         y0, y1 = 0, self.height
         canvas.create_rectangle(x0, y0, x1, y1, fill = "purple")
 
+#Draws the musical board that the notes come down on
     def drawBoard(self, canvas):
         Map.numCells 
         y0, y1 = 0, self.height

@@ -1,9 +1,10 @@
 from cmu_112_graphics import *
 from Notes import Notes
+from Special_Note import*
 
-class Jump(Notes):
-    def __init__(self, xPos, noteSize, time, songbpm):
-        super().__init__(0, noteSize, time, songbpm, 1)
+class Jump(Special_Note):
+    def __init__(self, xPos, noteSize, time, songbpm, app):
+        super().__init__(0, noteSize, time, songbpm, app)
         
     def drawNote(self, canvas):
         cy = self.y

@@ -25,8 +25,9 @@ def timerFired(app):
         note.updateNotePos(app.time)
         
         #Scores the note if the time == the note's game time
-        if app.time == note.scoreTime:
-            note.scoreNote
+        if abs(app.time - note.scoreTime) < 4:
+            score = note.scoreNote(app.player.inputs[0])
+            app.player.updateScore(score)
 
     #Testing for key held down
     print(app.player.inputs) #prints out key value  
@@ -42,5 +43,6 @@ def redrawAll(app, canvas):
     app.map.drawGame(canvas)
     for note in app.notesMap:
         note.drawNote(canvas)
+    app.player.drawScore(canvas)
 
 runApp(width=1000, height=500)

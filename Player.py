@@ -7,13 +7,14 @@ class Player(object):
         self.score = 0
         #self.inputs will be a list of 2 x-positions
         self.inputs = [None]
+        self.score = 0
 
     def playerInputs(self):
         return [self.inputs[0], self.inputs[1]]
 
     def updatePlayerInputs(self, event, x0 = -1, x1 = -1):
         if event.key == '1':
-            self.inputs = [1]
+            self.inputs = [100]
         elif event.key == '2':
             self.inputs = [2]
         elif event.key == '3':
@@ -26,4 +27,9 @@ class Player(object):
 
     def setDefaultInput(self):
         self.inputs = [None]
-        
+
+    def drawScore(self, canvas):
+        canvas.create_text(100, 50, text = str(self.score))
+    
+    def updateScore(self, score):
+        self.score += score

@@ -9,7 +9,7 @@
 # -scoreTime (the time when the note is checked if it is scored or not)
 ################################################################################
 class Notes(object):
-    def __init__ (self, xPos, noteSize, time, songbpm, noteLength = 1, score = 20):
+    def __init__ (self, xPos, noteSize, time, songbpm, app, noteLength = 1, score = 20):
         #Note Starting Position
         self.x, self.y = xPos, -noteSize
         
@@ -20,8 +20,12 @@ class Notes(object):
         #Score and times
         self.score = score
         self.noteTime = time
-        self.scoreTime = time + songbpm
+        timeOnBoard = 10 * songbpm
+        self.scoreTime = time + timeOnBoard
 
+        self.dy = app.height/timeOnBoard
+
+        self.scored = False
 
 #Function draws the note's current position
     def drawNote(self, canvas):
@@ -37,14 +41,18 @@ class Notes(object):
 #This function moves the note down on the screen
     def updateNotePos(self, gameTime):
         if gameTime >= self.noteTime:
-            self.y += 5
+            self.y += self.dy
 
 
 #Function takes in player input and matches it with the note's x-position,
     def scoreNote(self, playerInput):
         #Check player input algorithm later TODO
-        input1, input2 = playerInput[0], playerInput[1]
-        if self.x == input1 or self.x == input2:
+        #input1, input2 = playerInput[0], playerInput[1]
+        input1 = playerInput
+        if self.x == input1 and not self.scored:
+            print("scored")
+            self.scored = True
             return self.score
         #return 0 if the player input is not close enough
-        return 0  
+        print("not scored")
+        return 0
