@@ -21,13 +21,25 @@ class Player(object):
 
     def setInput(self, event, input):
         if event.key == '1':
-            input = [100]
+            input = 1
         elif event.key == '2':
-            input = [200]
+            input = 2
         elif event.key == '3':
-            input = [300]
+            input = 3
         elif event.key == '4':
-            input = '4'
+            input = 4
+        elif event.key == '5':
+            input = 5
+        elif event.key == '6':
+            input = 6
+        elif event.key == '7':
+            input = 7
+        elif event.key == '8':
+            input = 8
+        elif event.key == '9':
+            input = 9
+        elif event.key == '0':
+            input = 10
         else:
             input = -1
         return input

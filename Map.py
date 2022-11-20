@@ -8,7 +8,7 @@ import random
 class Map(object):
     numCells = 10
     def __init__(self, app, mapLength, bpm, difficulty):
-        
+        self.bpm = bpm
         self.width, self.height = app.width, app.height
 
         margin = app.width // 5
@@ -16,32 +16,35 @@ class Map(object):
         self.lBorder, self.rBorder = margin, app.width - margin
         self.boardWidth = self.rBorder - self.lBorder 
 
-        cellWidth = (self.rBorder - self.lBorder)/Map.numCells
+        self.cellWidth = (self.rBorder - self.lBorder)/Map.numCells
         #Add 1 to Map.numCells because this gives 11 x coords for 10 cells (in between)
-        self.boardCoords = [(margin + i * cellWidth) for i in range(Map.numCells+1)]
+        self.boardCoords = [(margin + i * self.cellWidth) for i in range(Map.numCells+1)]
 
         skip = 0
         #self.notesMap = [Node(100, 20, 15, 2, app), Slider(200, 20, 5, 2, app, 10), Jump(0, 20, 10, 2, app), Down(0, 20, 10, 2, app)]
-        self.notesMap = [Node(100, 20, 15, 2, app), Node(200, 20, 15, 2, app)]
+        self.notesMap = []
+        for i in range(mapLength):
+            self.notesMap.append(self.randomNote(i*10, app))
+                    #i*10 Sets the time in the game, the element will appear
 
 
-    def randomNote(self):
-        noteType = random.randint(1,3)
-        xPos, noteSize, time, songbpm, noteLength = 1
-
-        if noteType == 1:
-            return Node(attributes)
+    def randomNote(self, time, app):
+        noteType = random.randint(1, 10)
+        noteSize = self.cellWidth
+        if noteType >= 3:
+            xPos = random.randint(1,10)
+            return Node(xPos, noteSize, time, self.bpm, app)
         if noteType == 2:
-            return Jump(attribute)
-        if noteType == 3:
-            return Slider(attribute)
+            return Jump(0, noteSize, time, self.bpm, app)
+        if noteType == 1:
+            return Down(0, noteSize, time, self.bpm, app)
 
     def drawNotes(self, canvas, offset):
         for note in self.notesMap:
             if isinstance(note, SpecialNote):
                 note.drawNote(canvas, offset, self.boardWidth)
             else: 
-                note.drawNote(canvas, offset)
+                note.drawNote(canvas, offset, self.cellWidth)
 
     #TODO Change this to use an image instead
     def drawGame(self, canvas):

@@ -9,4 +9,4 @@ class SpecialNote(Notes):
         cy = self.y
         r = self.noteSize
 
-        canvas.create_rectangle(offset, cy - r, offset + width, cy + r, fill = color)
+        canvas.create_rectangle(offset, cy - r/4, offset + width, cy + r/4, fill = color)

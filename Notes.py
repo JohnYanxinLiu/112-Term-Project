@@ -27,13 +27,13 @@ class Notes(object):
         self.scored = False
 
 #Function draws the note's current position
-    def drawNote(self, canvas, offset):
-        cx, cy = self.x + offset, self.y
+    def drawNote(self, canvas, offset, cellWidth):
+        cx, cy = (self.x-1)*cellWidth + offset, self.y
         
         r = self.noteSize
         
-        x0, x1 = cx - r, cx + r
-        y0, y1 = cy - r/2, cy + r/2
+        x0, x1 = cx, cx + r
+        y0, y1 = cy - r/4, cy + r/4
         canvas.create_rectangle(x0, y0, x1, y1, fill = 'red')
 
 
