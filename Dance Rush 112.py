@@ -12,7 +12,7 @@ def appStarted(app):
     app.time = 0
     app.x0 = 0
     app.x1 = 0
-
+    app.side = True
 
 def timerFired(app):
     app.time += 1
@@ -30,6 +30,8 @@ def timerFired(app):
     print(app.player.inputs) #prints out key value  
     app.player.setDefaultInput()
     print(app.player.inputs) #prints out default value
+
+    app.side != app.side
 
 def keyPressed(app, event):
     app.player.updatePlayerInputs(event)

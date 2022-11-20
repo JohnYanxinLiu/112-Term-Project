@@ -1,3 +1,7 @@
+################################################################################
+# Player object controls player score and player input
+################################################################################
+
 class Player(object):
     def __init__(self):
         self.score = 0
@@ -19,6 +23,7 @@ class Player(object):
         else:
             self.inputs = None
         return False
+
     def setDefaultInput(self):
         self.inputs = [None]
         
