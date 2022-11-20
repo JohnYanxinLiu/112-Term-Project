@@ -9,9 +9,13 @@ def appStarted(app):
     app.map = [Node(100, 20, 15, 20), Slider(200, 20, 5, 5, 10)]
     app.player = Player()
     app.time = 0
-    
+    app.x0 = 0
+    app.x1 = 0
+
+
 def timerFired(app):
     app.time += 1
+    app.pressed = False
 
     for note in app.map:
         #Updates the position of each note
@@ -21,10 +25,13 @@ def timerFired(app):
         if app.time == note.scoreTime:
             note.scoreNote
 
+    #Testing for key pressed        
+    print(app.player.inputs)    
+    app.player.setDefaultInput()
+    print(app.player.inputs)
+
 def keyPressed(app, event):
     app.player.updatePlayerInputs(event)
-    
-
 
 def redrawAll(app, canvas):
     for note in app.map:
