@@ -13,13 +13,14 @@ def appStarted(app):
     app.time = 0
     app.x0 = 0
     app.x1 = 0
-    app.side = True
+    app.side = False
 
 
 def timerFired(app):
     app.time += 1
     app.pressed = False
-
+    #toggleSide(app)
+    print(app.player.inputs)
     for note in app.notesMap:
         #Updates the position of each note
         note.updateNotePos(app.time)
@@ -28,19 +29,24 @@ def timerFired(app):
         if type(note) == Slider:
             extraTime = note.noteLength
             time = time - extraTime//2
-        if abs(time - note.scoreTime) < 4 + extraTime:
-            #Scores the note if the time == the note's game time    
-            score = note.scoreNote(app.player.inputs[0], app.time)
+        if abs(time - note.scoreTime) < 6 + extraTime:
+            #Scores the note if the time == the note's game time
+            score = note.scoreNote(app.player.inpu[0], app.time)
             print(score)
             app.player.updateScore(score)
     #Testing for key held down
     #print(app.player.inputs) #prints out key value  
     app.player.setDefaultInput()
-    
-    app.side != app.side
+
+#Helper function for later in case I can get multiple inputs working
+def toggleSide(app):
+    if app.side:
+        app.side = False
+    else:
+        app.side = True    
 
 def keyPressed(app, event):
-    app.player.updatePlayerInputs(event)
+    app.player.updatePlayerInputs(event, app.side)
 
 def redrawAll(app, canvas):
     app.map.drawGame(canvas)
