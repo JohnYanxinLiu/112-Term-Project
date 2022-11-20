@@ -16,7 +16,7 @@ class Player(object):
         if event.key == '1':
             self.inputs = [100]
         elif event.key == '2':
-            self.inputs = [2]
+            self.inputs = [200]
         elif event.key == '3':
             self.inputs = [3]
         elif event.key == '4':
@@ -32,4 +32,5 @@ class Player(object):
         canvas.create_text(100, 50, text = str(self.score))
     
     def updateScore(self, score):
-        self.score += score
+        if score != None:
+            self.score += score

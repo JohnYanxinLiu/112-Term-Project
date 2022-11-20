@@ -9,12 +9,11 @@
 # -scoreTime (the time when the note is checked if it is scored or not)
 ################################################################################
 class Notes(object):
-    def __init__ (self, xPos, noteSize, time, songbpm, app, noteLength = 1, score = 20):
+    def __init__ (self, xPos, noteSize, time, songbpm, app, score = 20):
         #Note Starting Position
         self.x, self.y = xPos, -noteSize
         
-        #Note size attributes
-        self.noteLength = noteLength
+        #Note size attribute
         self.noteSize = noteSize
         
         #Score and times
@@ -34,7 +33,7 @@ class Notes(object):
         r = self.noteSize
         
         x0, x1 = cx - r, cx + r
-        y0, y1 = cy - (self.noteLength*r/2), cy + r/2
+        y0, y1 = cy - r/2, cy + r/2
         canvas.create_rectangle(x0, y0, x1, y1, fill = 'red')
 
 
@@ -45,14 +44,11 @@ class Notes(object):
 
 
 #Function takes in player input and matches it with the note's x-position,
-    def scoreNote(self, playerInput):
-        #Check player input algorithm later TODO
-        #input1, input2 = playerInput[0], playerInput[1]
-        input1 = playerInput
-        if self.x == input1 and not self.scored:
-            print("scored")
+    def scoreNote(self, scored):
+        if scored:
             self.scored = True
             return self.score
-        #return 0 if the player input is not close enough
-        print("not scored")
-        return 0
+        else:
+            return 0
+
+        

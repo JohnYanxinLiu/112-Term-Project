@@ -23,17 +23,18 @@ def timerFired(app):
     for note in app.notesMap:
         #Updates the position of each note
         note.updateNotePos(app.time)
-        
-        #Scores the note if the time == the note's game time
-        if abs(app.time - note.scoreTime) < 4:
-            score = note.scoreNote(app.player.inputs[0])
+        extraTime = 0
+        if type(note) == Slider:
+            extraTime = note.noteLength
+        if abs(app.time - note.scoreTime) < 4 + extraTime:
+            #Scores the note if the time == the note's game time    
+            score = note.scoreNote(app.player.inputs[0], app.time)
             app.player.updateScore(score)
-
+            print(score)
     #Testing for key held down
     print(app.player.inputs) #prints out key value  
     app.player.setDefaultInput()
-    print(app.player.inputs) #prints out default value
-
+    
     app.side != app.side
 
 def keyPressed(app, event):
