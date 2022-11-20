@@ -25,10 +25,10 @@ def timerFired(app):
         if app.time == note.scoreTime:
             note.scoreNote
 
-    #Testing for key pressed        
-    print(app.player.inputs)    
+    #Testing for key held down
+    print(app.player.inputs) #prints out key value  
     app.player.setDefaultInput()
-    print(app.player.inputs)
+    print(app.player.inputs) #prints out default value
 
 def keyPressed(app, event):
     app.player.updatePlayerInputs(event)
