@@ -19,12 +19,14 @@ class Slider(Notes):
                 and abs(time - timeToScore) < 4):
                 section [1] = True
                 super().scoreNote(True)
+                return self.score
             #return 0 if the player input is not close enough
             if not sectionScored:
                 super().scoreNote(False)
+                return 0
 
-    def drawNote(self, canvas):
-        cx, cy = self.x, self.y
+    def drawNote(self, canvas, offset):
+        cx, cy = self.x + offset, self.y
         r = self.noteSize
         
         x0, x1 = cx - r, cx + r

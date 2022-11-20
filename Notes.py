@@ -27,8 +27,8 @@ class Notes(object):
         self.scored = False
 
 #Function draws the note's current position
-    def drawNote(self, canvas):
-        cx, cy = self.x, self.y
+    def drawNote(self, canvas, offset):
+        cx, cy = self.x + offset, self.y
         
         r = self.noteSize
         
@@ -46,6 +46,7 @@ class Notes(object):
 #Function takes in player input and matches it with the note's x-position,
     def scoreNote(self, scored):
         if scored:
+            print("scored")
             self.scored = True
             return self.score
         else:

@@ -11,6 +11,8 @@ class Node(Notes):
         input1 = playerInput
         if self.x == input1 and not self.scored:
             super().scoreNote(True)
+            return self.score
         #return 0 if the player input is not close enough
         if not self.scored:
             super().scoreNote(False)
+            return 0

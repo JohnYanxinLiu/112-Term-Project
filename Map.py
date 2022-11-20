@@ -12,8 +12,10 @@ class Map(object):
         self.width, self.height = app.width, app.height
 
         margin = app.width // 5
-        self.lBorder, self.rBorder = margin, app.width - margin
         
+        self.lBorder, self.rBorder = margin, app.width - margin
+        self.boardWidth = self.rBorder - self.lBorder 
+
         cellWidth = (self.rBorder - self.lBorder)/Map.numCells
         #Add 1 to Map.numCells because this gives 11 x coords for 10 cells (in between)
         self.boardCoords = [(margin + i * cellWidth) for i in range(Map.numCells+1)]
@@ -31,11 +33,19 @@ class Map(object):
             return Jump(attribute)
         if noteType == 3:
             return Slider(attribute)
-    
+
+    def drawNotes(self, canvas, offset):
+        for note in self.notesMap:
+            if isinstance(note, SpecialNote):
+                note.drawNote(canvas, offset, self.boardWidth)
+            else: 
+                note.drawNote(canvas, offset)
+
     #TODO Change this to use an image instead
     def drawGame(self, canvas):
         self.drawBackground(canvas)
         self.drawBoard(canvas)
+        self.drawNotes(canvas, self.lBorder)
 
 #Currently draws the simple purple background of the game TODO Change to actual game background
     def drawBackground(self, canvas):
