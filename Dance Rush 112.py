@@ -30,22 +30,26 @@ def timerFired(app):
             time = time - extraTime//2
         if abs(time - note.scoreTime) < 6 + extraTime:
             #Scores the note if the time == the note's game time
-            score = note.scoreNote(app.player.inputs[0], app.time)
+            score = note.scoreNote(app.player.getInputs(), app.time)
             print(score)
             app.player.updateScore(score)
+    print(app.player.getInputs())
     #Testing for key held down
     #print(app.player.inputs) #prints out key value  
-    app.player.setDefaultInput()
+    #app.player.setDefaultInput()
 
 #Helper function for later in case I can get multiple inputs working
 def toggleSide(app):
     if app.side:
         app.side = False
     else:
-        app.side = True    
+        app.side = True        
 
 def keyPressed(app, event):
-    app.player.updatePlayerInputs(event, app.side)
+    app.player.holdKey(event)
+
+def keyReleased(app, event):
+    app.player.releaseKey(event)
 
 def redrawAll(app, canvas):
     app.map.drawGame(canvas)
