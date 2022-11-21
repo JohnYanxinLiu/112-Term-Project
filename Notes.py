@@ -28,7 +28,7 @@ class Notes(object):
 
 #Function draws the note's current position
     def drawNote(self, canvas, offset, cellWidth):
-        cx, cy = (self.x-1)*cellWidth + offset, self.y
+        cx, cy = (self.x - 1)*cellWidth + offset, self.y
         
         r = self.noteSize
         

@@ -14,12 +14,17 @@ class Player(object):
 
     def holdKey(self, event):
         if event.key.isdigit() and len(self.inputs) <2:
-           self.inputs.add(int(event.key))
+            if event.key == '0':
+                self.inputs.add(10)
+            else:
+                self.inputs.add(int(event.key))
 
     def releaseKey(self, event):
+        if event.key == '0':
+                self.inputs.remove(10)
         if event.key.isdigit() and int(event.key) in self.inputs:
             self.inputs.remove(int(event.key))
-            
+
     def drawScore(self, canvas):
         canvas.create_text(100, 50, text = str(self.score))
     

@@ -32,7 +32,7 @@ class Map(object):
         noteType = random.randint(1, 10)
         noteSize = self.cellWidth
         if noteType >= 3:
-            xPos = random.randint(1,10)
+            xPos = random.randint(1 ,10)
             return Node(xPos, noteSize, time, self.bpm, app)
         if noteType == 2:
             return Jump(0, noteSize, time, self.bpm, app)

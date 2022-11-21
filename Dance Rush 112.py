@@ -55,4 +55,4 @@ def redrawAll(app, canvas):
     app.map.drawGame(canvas)
     app.player.drawScore(canvas)
 
-runApp(width=1000, height=500)
+runApp(width=500, height=500)
