@@ -5,7 +5,7 @@
 class Player(object):
     def __init__(self):
         self.score = 0
-        #self.inputs will be a list of 2 x-positions
+        #inputs will be a list of 2 x-positions
         self.inputs = set()
         self.score = 0
 
@@ -13,15 +13,19 @@ class Player(object):
         return self.inputs
 
     def holdKey(self, event):
+        #Checks that the key pressed is a digit and that there will be no more than 2 inputs
         if event.key.isdigit() and len(self.inputs) <2:
+            #For ergonomics, 0 = 10
             if event.key == '0':
                 self.inputs.add(10)
             else:
                 self.inputs.add(int(event.key))
 
     def releaseKey(self, event):
+        #If the key released is 0, remove 10
         if event.key == '0':
                 self.inputs.remove(10)
+        #if the key released is a digit and the digit is in the set of inputs, remove the input
         if event.key.isdigit() and int(event.key) in self.inputs:
             self.inputs.remove(int(event.key))
 

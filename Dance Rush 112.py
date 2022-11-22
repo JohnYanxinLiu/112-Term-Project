@@ -11,14 +11,9 @@ def appStarted(app):
     app.notesMap = app.map.notesMap
     app.player = Player()
     app.time = 0
-    app.x0 = 0
-    app.x1 = 0
-    app.side = True
-
 
 def timerFired(app):
     app.time += 1
-    app.pressed = False
     #toggleSide(app)
     for note in app.notesMap:
         #Updates the position of each note
@@ -33,11 +28,8 @@ def timerFired(app):
             score = note.scoreNote(app.player.getInputs(), app.time)
             print(score)
             app.player.updateScore(score)
-    print(app.player.getInputs())
-    #Testing for key held down
-    #print(app.player.inputs) #prints out key value  
-    #app.player.setDefaultInput()
-
+    #print(app.player.getInputs())
+    
 #Helper function for later in case I can get multiple inputs working
 def toggleSide(app):
     if app.side:
