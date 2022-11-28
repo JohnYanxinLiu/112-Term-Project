@@ -23,7 +23,7 @@ def timerFired(app):
         if type(note) == Slider:
             extraTime = note.noteLength
             time = time - extraTime//2
-        if abs(time - note.scoreTime) < 6 + extraTime:
+        if abs(time - note.scoreTime) < 2 + extraTime:
             #Scores the note if the time == the note's game time
             score = note.scoreNote(app.player.getInputs(), app.time)
             print(score)
