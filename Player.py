@@ -32,6 +32,14 @@ class Player(object):
     def drawScore(self, canvas):
         canvas.create_text(100, 50, text = str(self.score))
     
+    def drawInputs(self, canvas, height, lBorder, cellWidth):
+        y0, y1 = height * 0.9, height
+        for x in self.inputs:
+            x -= 1
+            x0 = lBorder + x * cellWidth
+            x1 = x0 + cellWidth
+            canvas.create_rectangle(x0, y0, x1, y1, fill = 'red')
+
     def updateScore(self, score):
         if score != None:
             self.score += score
