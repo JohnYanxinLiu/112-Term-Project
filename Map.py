@@ -18,7 +18,7 @@ class Map(object):
 
         skip = 0
 
-        self.notesMap = [Slider(1, self.cellWidth, 10, 2, app, 10), Slider(1, self.cellWidth, 30, 2, app, 10)]
+        self.notesMap = [Node(1, self.cellWidth, 5, 2, app), Slider(1, self.cellWidth, 10, 2, app, 10), Slider(1, self.cellWidth, 30, 2, app, 10)]
         '''self.notesMap = []
         for i in range(mapLength):
             self.notesMap.append(self.randomNote(i*10, app))

@@ -20,20 +20,22 @@ def timerFired(app):
         time = app.time
         score = 0
 
-        #Special scoring method for Slider Note
-        if type(note) == Slider:
+        if type(note) != Slider:        
+            #Special scoring method for Down, we pass in old inputs too
+            if type(note) == Down:
+                score = note.scoreNote(app.player.getInputs(), time, app.player.oldInputs)
+
+            #Default scoring method
+            else: 
+                score = note.scoreNote(app.player.getInputs(), app.time)
+        
+            app.player.updateScore(score)
+        else:
+            #Special scoring method for Slider Note
             for node in note.scoringNodes:
                 score = node.scoreNote(app.player.getInputs(), app.time)
-        
-        #Special scoring method for Down, we pass in old inputs too
-        elif type(note) == Down:
-            score = note.scoreNote(app.player.getInputs(), time, app.player.oldInputs)
+                app.player.updateScore(score)
 
-        #Default scoring method
-        score = note.scoreNote(app.player.getInputs(), app.time)
-        
-        #At the end of the if chain, updat the scor
-        app.player.updateScore(score)
     app.player.updateOldInputs(app.player.inputs)
 
 
