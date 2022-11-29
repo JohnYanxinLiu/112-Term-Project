@@ -51,4 +51,101 @@ class Notes(object):
         else:
             return 0
 
+class Node(Notes):
+    def __init__(self, xPos, noteSize, time, songbpm, app):
+        super().__init__(xPos, noteSize, time, songbpm, app)
+
+    def scoreNote(self, playerInputs, time):
+        #Check player input algorithm later TODO
+        #input1, input2 = playerInput[0], playerInput[1]
+        if abs(time - self.scoreTime) > 2:
+            return 0
+        for input in playerInputs:
+            if self.x == input and not self.scored:
+                super().scoreNote(True)
+                return self.score
+        #return 0 if the player input is not close enough
+            if not self.scored:
+                super().scoreNote(False)
+                return 0
         
+
+class Slider(Notes):
+    def __init__(self, xPos, noteSize, time, songbpm, app, noteLength):
+        super().__init__(xPos, noteSize, time, songbpm, app, noteLength)
+        #noteLength is randomly generated from Map class and passed through
+        self.noteLength = noteLength
+        '''timeInterval = noteLength * songbpm'''
+        #TODO Change the time interval that the slider spawns multiople nodes
+        self.scoringNodes = [(Node(xPos, noteSize, time + i, songbpm, app)) for i in range(noteLength)]
+        
+
+    def scoreNote(self, playerInput, time):
+        #Check player input algorithm later TODO
+        for node in self.scoringNodes:
+            score = node.scoreNote(playerInput, node.scoreTime)
+            if score != 0:
+                self.scoringNodes.pop(0)
+                return score
+
+
+    def drawNote(self, canvas, offset, cellWidth):
+        cx, cy = (self.x - 1)*cellWidth + offset, self.y
+        
+        r = self.noteSize
+        
+        x0, x1 = cx, cx + r
+        y0, y1 = cy - (self.noteLength*r/2), cy + r/2
+        canvas.create_rectangle(x0, y0, x1, y1, fill = 'red')
+
+
+class SpecialNote(Notes):
+    def __init__(self, xPos, noteSize, time, songbpm, app):
+        super().__init__(0, noteSize, time, songbpm, app)
+
+    def drawNote(self, canvas, color, offset, width):
+        
+        cy = self.y
+        r = self.noteSize
+
+        canvas.create_rectangle(offset, cy - r/4, offset + width, cy + r/4, fill = color)
+
+class Jump(SpecialNote):
+    def __init__(self, xPos, noteSize, time, songbpm, app):
+        super().__init__(0, noteSize, time, songbpm, app)
+        
+    def drawNote(self, canvas, offset, width):
+        color = "blue"
+        super().drawNote(canvas, color, offset, width)
+
+    def scoreNote(self, playerInputs, time):
+        #Check player input algorithm later TODO
+        if abs(time - self.scoreTime) > 1:
+            return
+        if len(playerInputs) == 0 and not self.scored:
+                super().scoreNote(True)
+                return self.score
+        #return 0 if the player input is not close enough
+        if not self.scored:
+                super().scoreNote(False)
+                return 0
+
+class Down(SpecialNote):
+    def __init__(self, xPos, noteSize, time, songbpm, app):
+        super().__init__(0, noteSize, time, songbpm, app)
+
+    def drawNote(self, canvas, offset, width):
+        color = "yellow"
+        super().drawNote(canvas, color, offset, width)
+
+    def scoreNote(self, inputs, time, oldInputs):
+        #Check player input algorithm later TODO
+        if abs(time - self.scoreTime) > 6:
+            return 0
+        if len(inputs) > 0 and () in oldInputs and not self.scored:
+            super().scoreNote(True)
+            return self.score
+        #return 0 if the player input is not close enough
+        if not self.scored:
+            super().scoreNote(False)
+            return 0

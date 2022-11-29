@@ -1,9 +1,4 @@
 from Notes import *
-from Node import *
-from Jump import *
-from Slider import *
-from Down import *
-import random
 
 class Map(object):
     numCells = 10
