@@ -46,7 +46,6 @@ class Notes(object):
 #Function takes in player input and matches it with the note's x-position,
     def scoreNote(self, scored):
         if scored:
-            print("scored")
             self.scored = True
             return self.score
         else:

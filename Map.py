@@ -21,11 +21,11 @@ class Map(object):
         self.boardCoords = [(margin + i * self.cellWidth) for i in range(Map.numCells+1)]
 
         skip = 0
-        #self.notesMap = [Node(100, 20, 15, 2, app), Slider(200, 20, 5, 2, app, 10), Jump(0, 20, 10, 2, app), Down(0, 20, 10, 2, app)]
-        self.notesMap = []
+        self.notesMap = [Down(0, 20, 10, 2, app), Down(0, 20, 30, 2, app), Down(0, 20, 40, 2, app), Down(0, 20, 50, 2, app)]
+        '''self.notesMap = []
         for i in range(mapLength):
             self.notesMap.append(self.randomNote(i*10, app))
-                    #i*10 Sets the time in the game, the element will appear
+                    #i*10 Sets the time in the game, the element will appear'''
 
 
     def randomNote(self, time, app):

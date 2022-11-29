@@ -8,6 +8,7 @@ class Player(object):
         #inputs will be a list of 2 x-positions
         self.inputs = set()
         self.score = 0
+        self.oldInputs = []
 
     def getInputs(self):
         return self.inputs
@@ -28,7 +29,7 @@ class Player(object):
         #if the key released is a digit and the digit is in the set of inputs, remove the input
         if event.key.isdigit() and int(event.key) in self.inputs:
             self.inputs.remove(int(event.key))
-
+    
     def drawScore(self, canvas):
         canvas.create_text(100, 50, text = str(self.score))
     
@@ -39,6 +40,14 @@ class Player(object):
             x0 = lBorder + x * cellWidth
             x1 = x0 + cellWidth
             canvas.create_rectangle(x0, y0, x1, y1, fill = 'red')
+
+
+    def updateOldInputs(self, newInputs):
+        inputs = tuple(newInputs)
+        self.oldInputs.append(inputs)
+        if len(self.oldInputs) > 5:
+            self.oldInputs.pop(0)
+
 
     def updateScore(self, score):
         if score != None:

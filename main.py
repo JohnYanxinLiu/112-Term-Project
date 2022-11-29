@@ -12,6 +12,7 @@ def appStarted(app):
     app.player = Player()
     app.time = 0
 
+
 def timerFired(app):
     app.time += 1
     #toggleSide(app)
@@ -20,18 +21,23 @@ def timerFired(app):
         note.updateNotePos(app.time)
         extraTime = 0
         time = app.time
+        score = 0
         if type(note) == Slider:
             extraTime = note.noteLength
             time = time - extraTime//2
-        if abs(time - note.scoreTime) < 2 + extraTime:
-            #Scores the note if the time == the note's game time
+        elif type(note) == Down and abs(time - note.scoreTime) < 6:
+            score = note.scoreNote(app.player.getInputs(), app.player.oldInputs)
+        elif abs(time - note.scoreTime) < 2:
             score = note.scoreNote(app.player.getInputs(), app.time)
-            print(score)
-            app.player.updateScore(score)
+        app.player.updateScore(score)
+    app.player.updateOldInputs(app.player.inputs)
+    #print(app.player.oldInputs)
     #print(app.player.getInputs())
 
 def keyPressed(app, event):
     app.player.holdKey(event)
+
+
 
 def keyReleased(app, event):
     app.player.releaseKey(event)
