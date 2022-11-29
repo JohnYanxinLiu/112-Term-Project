@@ -29,7 +29,7 @@ def timerFired(app):
                 score = node.scoreNote(app.player.getInputs(), app.time)
         
         #Special scoring method for Down, we pass in old inputs too
-        elif type(note) == Down and abs(time - note.scoreTime) < 6:
+        elif type(note) == Down:
             score = note.scoreNote(app.player.getInputs(), time, app.player.oldInputs)
 
         #Default scoring method
