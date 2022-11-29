@@ -83,7 +83,7 @@ class Slider(Notes):
     def scoreNote(self, playerInput, time):
         #Check player input algorithm later TODO
         for node in self.scoringNodes:
-            score = node.scoreNote(playerInput, time)
+            score = node.scoreNote(playerInput, node.scoreTime)
             if score != 0:
                 self.scoringNodes.pop(0)
                 return score
