@@ -69,7 +69,6 @@ class Node(Notes):
                 super().scoreNote(False)
                 return 0
         
-
 class Slider(Notes):
     def __init__(self, xPos, noteSize, time, songbpm, app, noteLength):
         super().__init__(xPos, noteSize, time, songbpm, app, noteLength)
@@ -97,7 +96,6 @@ class Slider(Notes):
         x0, x1 = cx, cx + r
         y0, y1 = cy - (self.noteLength*r/2), cy + r/2
         canvas.create_rectangle(x0, y0, x1, y1, fill = 'red')
-
 
 class SpecialNote(Notes):
     def __init__(self, xPos, noteSize, time, songbpm, app):

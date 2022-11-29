@@ -1,7 +1,5 @@
 from cmu_112_graphics import *
-from Node import *
 from Notes import *
-from Slider import *
 from Player import *
 from Map import *
 
