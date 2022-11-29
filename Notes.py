@@ -67,8 +67,8 @@ class Node(Notes):
         #return 0 if the player input is not close enough
             if not self.scored:
                 super().scoreNote(False)
-                return 0
-        
+        return 0
+
 class Slider(Notes):
     def __init__(self, xPos, noteSize, time, songbpm, app, noteLength):
         super().__init__(xPos, noteSize, time, songbpm, app, noteLength)
@@ -77,12 +77,13 @@ class Slider(Notes):
         '''timeInterval = noteLength * songbpm'''
         #TODO Change the time interval that the slider spawns multiople nodes
         self.scoringNodes = [(Node(xPos, noteSize, time + i, songbpm, app)) for i in range(noteLength)]
-        
+        for node in self.scoringNodes:
+            print(node.scored)
 
     def scoreNote(self, playerInput, time):
         #Check player input algorithm later TODO
         for node in self.scoringNodes:
-            score = node.scoreNote(playerInput, node.scoreTime)
+            score = node.scoreNote(playerInput, time)
             if score != 0:
                 self.scoringNodes.pop(0)
                 return score

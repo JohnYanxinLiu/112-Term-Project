@@ -17,7 +17,6 @@ def timerFired(app):
     for note in app.notesMap:
         #Updates the position of each note
         note.updateNotePos(app.time)
-        extraTime = 0
         time = app.time
         score = 0
 
@@ -40,7 +39,8 @@ def timerFired(app):
 
 def keyPressed(app, event):
     app.player.holdKey(event)
-
+    if event.key == "j":
+        print(app.map.notesMap[1].scoringNodes)
 def keyReleased(app, event):
     app.player.releaseKey(event)
 

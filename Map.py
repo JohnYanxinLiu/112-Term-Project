@@ -1,4 +1,5 @@
 from Notes import *
+import random
 
 class Map(object):
     numCells = 10
