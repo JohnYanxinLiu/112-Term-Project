@@ -21,7 +21,8 @@ class Map(object):
         self.boardCoords = [(margin + i * self.cellWidth) for i in range(Map.numCells+1)]
 
         skip = 0
-        self.notesMap = [Down(0, 20, 10, 2, app), Down(0, 20, 30, 2, app), Down(0, 20, 40, 2, app), Down(0, 20, 50, 2, app)]
+
+        self.notesMap = [Slider(1, self.cellWidth, 10, 2, app, 10), Slider(1, self.cellWidth, 30, 2, app, 10)]
         '''self.notesMap = []
         for i in range(mapLength):
             self.notesMap.append(self.randomNote(i*10, app))

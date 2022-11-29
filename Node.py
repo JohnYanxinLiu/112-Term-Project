@@ -8,6 +8,8 @@ class Node(Notes):
     def scoreNote(self, playerInputs, time):
         #Check player input algorithm later TODO
         #input1, input2 = playerInput[0], playerInput[1]
+        if abs(time - self.scoreTime) > 2:
+            return 0
         for input in playerInputs:
             if self.x == input and not self.scored:
                 super().scoreNote(True)

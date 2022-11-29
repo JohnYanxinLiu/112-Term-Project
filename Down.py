@@ -10,8 +10,10 @@ class Down(SpecialNote):
         color = "yellow"
         super().drawNote(canvas, color, offset, width)
 
-    def scoreNote(self, inputs, oldInputs):
+    def scoreNote(self, inputs, time, oldInputs):
         #Check player input algorithm later TODO
+        if abs(time - self.scoreTime) > 2:
+            return 0
         if len(inputs) > 0 and () in oldInputs and not self.scored:
             super().scoreNote(True)
             return self.score
