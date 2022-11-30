@@ -18,8 +18,15 @@ class Map(object):
         self.mapLen = mapLength
         self.timeOnScreen = timeOnScreen
         self.notesMap = dict()
+        skip = 0
         for beat in range(mapLength):
-            self.notesMap [beat] =  self.randomNote(app)
+            if skip > 0:
+                skip -= 1
+                continue
+            note = self.randomNote(app)
+            if type(note) == Slider:
+                skip = note.noteLength - 2
+            self.notesMap [beat] = note
         #self.cleanNotesMap()
         ########################################################################
 
@@ -39,7 +46,7 @@ class Map(object):
             return Down(0, noteSize, self.timeOnScreen, app)
 
     #Experimental function that cleans up the map of inconsistencies
-    '''def cleanNotesMap(self):
+    def cleanNotesMap(self):
         for key in range(len(self.notesMap)):
             note = self.notesMap[key]
 
@@ -57,7 +64,7 @@ class Map(object):
             
             #if there is a slider
             #    -make sure there are no notes with the same x position/special notes at all within the length of the slider
-            '''
+            
 
     def drawNotes(self, canvas, offset):
         for beat in self.notesMap:

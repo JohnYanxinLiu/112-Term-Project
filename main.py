@@ -47,6 +47,8 @@ def timerFired(app):
 
 
     for key in noteKeyRange:
+        if key not in app.notesMap:
+            continue
         note = app.notesMap[key]
         
         #Updates the position of each note

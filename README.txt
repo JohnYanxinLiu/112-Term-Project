@@ -1,0 +1,1 @@
+Notes Images taken from https://osu.ppy.sh/community/forums/topics/807428?n=1
