@@ -1,17 +1,29 @@
 from Notes import *
+from cmu_112_graphics import *
 import random
-
+################################################################################
+# Player object controls player score and player 
+# Map class handles generating/managing all the notes and game visuals
+################################################################################
 class Map(object):
-    numCells = 10
-    def __init__(self, app, mapLength, timeOnScreen, difficulty):
+    def __init__(self, app, mapLength, timeOnScreen, difficulty, numCells):
         #Setting up the background and drawing
         ########################################################################
+        self.numCells = numCells
         self.width, self.height = app.width, app.height
         margin = app.width // 5        
         self.lBorder, self.rBorder = margin, app.width - margin
         self.boardWidth = self.rBorder - self.lBorder
-        self.cellWidth = (self.rBorder - self.lBorder)/Map.numCells
-        self.boardCoords = [(margin + i * self.cellWidth) for i in range(Map.numCells+1)] #Add 1 to Map.numCells because this gives 11 x coords for 10 cells (in between)
+        self.cellWidth = (self.rBorder - self.lBorder)/self.numCells
+        self.boardCoords = [(margin + i * self.cellWidth + 1/2 * self.cellWidth) for i in range(self.numCells+1)] #Add 1 to self.numCells because this gives 11 x coords for 10 cells (in between)
+        
+        #BackgroundImage obtained from https://phandroid.com/2020/06/29/best-rhythm-games-for-android-and-iphone/
+        #Board cell image obtained from https://osu.ppy.sh/community/forums/topics/807428?n=1
+        bgImage = app.loadImage('backgroundImgS.png')
+        boardCellImage = app.loadImage('inputoverlay-background.png')
+        #Learned how to resize from https://www.tutorialspoint.com/how-to-resize-an-image-using-tkinter
+        self.boardCellImage = boardCellImage.resize((int(self.cellWidth) + 20//self.numCells, int(app.height*4/3)), Image.ANTIALIAS)
+        self.bgImage = app.scaleImage(bgImage, 1.5)
         
         #Generates Notes Map
         ########################################################################
@@ -33,12 +45,11 @@ class Map(object):
     def randomNote(self, app):
         noteType = random.randint(1, 10)
         noteSize = self.cellWidth
+        xPos = random.randint(1 ,self.numCells)
         if noteType >= 8:
-            xPos = random.randint(1 ,10)
             length = random.randint(2,6)
             return Slider(xPos, noteSize, self.timeOnScreen, app, length)
         if 3 <= noteType < 8:
-            xPos = random.randint(1 ,10)
             return Node(xPos, noteSize, self.timeOnScreen, app)
         if noteType == 2:
             return Jump(0, noteSize, self.timeOnScreen, app)
@@ -46,25 +57,22 @@ class Map(object):
             return Down(0, noteSize, self.timeOnScreen, app)
 
     #Experimental function that cleans up the map of inconsistencies
-    def cleanNotesMap(self):
-        for key in range(len(self.notesMap)):
-            note = self.notesMap[key]
-
-            #TODO If approaches end and slider goes past the map, replace slider with node
-
-            if type(note) == Slider:
-                hiKey = key + note.noteLength + 1
-                if hiKey > self.mapLen:
-                    hiKey = self.mapLen
-                for newKey in range(key, hiKey):
-                    newNote = self.notesMap [newKey]
-                    if (isinstance(newNote, SpecialNote) or 
-                        newNote.x == note.x):
-                        del self.notesMap [newKey]
-            
+    # def cleanNotesMap(self):
+    #     for key in range(len(self.notesMap)):
+    #         note = self.notesMap[key]
+    #         #TODO If approaches end and slider goes past the map, replace slider with node
+    #         if type(note) == Slider:
+    #             hiKey = key + note.noteLength + 1
+    #             if hiKey > self.mapLen:
+    #                 hiKey = self.mapLen
+    #             for newKey in range(key, hiKey):
+    #                 newNote = self.notesMap [newKey]
+    #                 if (isinstance(newNote, SpecialNote) or 
+    #                     newNote.x == note.x):
+    #                     del self.notesMap [newKey]     
             #if there is a slider
             #    -make sure there are no notes with the same x position/special notes at all within the length of the slider
-            
+
 
     def drawNotes(self, canvas, offset):
         for beat in self.notesMap:
@@ -75,22 +83,26 @@ class Map(object):
                 noteWidth = self.cellWidth
             note.drawNote(canvas, offset, noteWidth)
 
-    #TODO Change this to use an image instead
     def drawGame(self, canvas):
         self.drawBackground(canvas)
         self.drawBoard(canvas)
         self.drawNotes(canvas, self.lBorder)
 
-#Currently draws the simple purple background of the game TODO Change to actual game background
-    def drawBackground(self, canvas):
-        x0, x1 = 0, self.width
-        y0, y1 = 0, self.height
-        canvas.create_rectangle(x0, y0, x1, y1, fill = "purple")
 
-#Draws the musical board that the notes come down on
+    def drawStartScreen(self, canvas):
+        self.drawBackground(canvas)
+        x, y = self.width/2, self.height/2
+        startMessage = '''
+        Welcome to Dance Rush 112!! \n
+            (Press any key to play)'''
+        canvas.create_text(x, y, text = startMessage, font = "Arial 15 bold", fill = "white")
+
+    def drawBackground(self, canvas):
+        canvas.create_image(self.width//2, self.height//2, image=ImageTk.PhotoImage(self.bgImage))
+
+
+#Draws the game board that the notes come down on
     def drawBoard(self, canvas):
-        Map.numCells 
-        y0, y1 = 0, self.height
+        self.numCells 
         for i in range(len(self.boardCoords) - 1):
-            x0, x1 = self.boardCoords[i], self.boardCoords [i+1]
-            canvas.create_rectangle(x0, y0, x1, y1, fill = "grey", outline = "black")
+            canvas.create_image(self.boardCoords[i], self.height*3/5, image=ImageTk.PhotoImage(self.boardCellImage))
