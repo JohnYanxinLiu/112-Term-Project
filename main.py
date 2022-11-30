@@ -29,7 +29,6 @@ def appStarted(app):
     app.dt = app.tOld-app.tNew
     
 def timerFired(app):
-
     #Updates the current beat the game is on####################################
     if (math.isclose(time.time() - app.lastSecond, app.beatsPerSec) 
                   or time.time() - app.lastSecond > app.beatsPerSec):
