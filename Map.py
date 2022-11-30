@@ -18,18 +18,17 @@ class Map(object):
         self.mapLen = mapLength
         self.timeOnScreen = timeOnScreen
         self.notesMap = dict()
-        #self.notesMap = {0:Node(1, self.cellWidth, self.timeOnScreen, app), 1:Node(1, self.cellWidth, self.timeOnScreen, app)}
         for beat in range(mapLength):
-            self.notesMap [beat] =  self.randomNote(app)            
+            self.notesMap [beat] =  self.randomNote(app)
+        #self.cleanNotesMap()
         ########################################################################
-        
 
     def randomNote(self, app):
         noteType = random.randint(1, 10)
         noteSize = self.cellWidth
         if noteType >= 8:
             xPos = random.randint(1 ,10)
-            length = random.randint(2,4)
+            length = random.randint(2,6)
             return Slider(xPos, noteSize, self.timeOnScreen, app, length)
         if 3 <= noteType < 8:
             xPos = random.randint(1 ,10)
@@ -38,6 +37,27 @@ class Map(object):
             return Jump(0, noteSize, self.timeOnScreen, app)
         if noteType == 1:
             return Down(0, noteSize, self.timeOnScreen, app)
+
+    #Experimental function that cleans up the map of inconsistencies
+    '''def cleanNotesMap(self):
+        for key in range(len(self.notesMap)):
+            note = self.notesMap[key]
+
+            #TODO If approaches end and slider goes past the map, replace slider with node
+
+            if type(note) == Slider:
+                hiKey = key + note.noteLength + 1
+                if hiKey > self.mapLen:
+                    hiKey = self.mapLen
+                for newKey in range(key, hiKey):
+                    newNote = self.notesMap [newKey]
+                    if (isinstance(newNote, SpecialNote) or 
+                        newNote.x == note.x):
+                        del self.notesMap [newKey]
+            
+            #if there is a slider
+            #    -make sure there are no notes with the same x position/special notes at all within the length of the slider
+            '''
 
     def drawNotes(self, canvas, offset):
         for beat in self.notesMap:
