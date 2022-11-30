@@ -6,7 +6,7 @@ import time
 import math
 
 def appStarted(app):
-    app.difficulty = 0.5
+    app.difficulty = 1
     app.timerDelay = 10
     app.bpm = 30
 
