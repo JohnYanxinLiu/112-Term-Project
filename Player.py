@@ -34,7 +34,7 @@ class Player(object):
         canvas.create_text(100, 50, text = str(self.score))
     
     def drawInputs(self, canvas, height, lBorder, cellWidth):
-        y0, y1 = height * 0.9, height
+        y0, y1 = height * 0.90, height * 0.91
         for x in self.inputs:
             x -= 1
             x0 = lBorder + x * cellWidth

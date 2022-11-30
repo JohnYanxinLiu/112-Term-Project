@@ -3,7 +3,7 @@ import random
 
 class Map(object):
     numCells = 10
-    def __init__(self, app, mapLength, ticksOnScreen, difficulty):
+    def __init__(self, app, mapLength, timeOnScreen, difficulty):
         #Setting up the background and drawing
         ########################################################################
         self.width, self.height = app.width, app.height
@@ -16,27 +16,28 @@ class Map(object):
         #Generates Notes Map
         ########################################################################
         self.mapLen = mapLength
-        self.ticksOnScreen = ticksOnScreen
+        self.timeOnScreen = timeOnScreen
         self.notesMap = dict()
+        #self.notesMap = {0:Node(1, self.cellWidth, self.timeOnScreen, app), 1:Node(1, self.cellWidth, self.timeOnScreen, app)}
         for beat in range(mapLength):
-            self.notesMap [beat] =  self.randomNote(beat, app)            
+            self.notesMap [beat] =  self.randomNote(app)            
         ########################################################################
         
 
-    def randomNote(self, beat, app):
+    def randomNote(self, app):
         noteType = random.randint(1, 10)
         noteSize = self.cellWidth
         if noteType >= 8:
             xPos = random.randint(1 ,10)
             length = random.randint(2,4)
-            return Slider(xPos, noteSize, beat, self.ticksOnScreen, app, length)
+            return Slider(xPos, noteSize, self.timeOnScreen, app, length)
         if 3 <= noteType < 8:
             xPos = random.randint(1 ,10)
-            return Node(xPos, noteSize, beat, self.ticksOnScreen, app)
+            return Node(xPos, noteSize, self.timeOnScreen, app)
         if noteType == 2:
-            return Jump(0, noteSize, beat, self.ticksOnScreen, app)
+            return Jump(0, noteSize, self.timeOnScreen, app)
         if noteType == 1:
-            return Down(0, noteSize, beat, self.ticksOnScreen, app)
+            return Down(0, noteSize, self.timeOnScreen, app)
 
     def drawNotes(self, canvas, offset):
         for beat in self.notesMap:

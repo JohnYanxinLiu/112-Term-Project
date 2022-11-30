@@ -9,7 +9,7 @@
 # -scoreTime (the time when the note is checked if it is scored or not)
 ################################################################################
 class Notes(object):
-    def __init__ (self, xPos, noteSize, beat, timeOnScreen, app, score = 20):
+    def __init__ (self, xPos, noteSize, timeOnScreen, app, score = 20):
         self.scoreTolerance = app.height/20
 
         self.timeOnScreen = timeOnScreen
@@ -22,7 +22,6 @@ class Notes(object):
 
         #Score and times
         self.score = score
-        self.noteStartBeat = beat
         self.scoreHeight = app.height*0.9
 
         self.scored = False
@@ -40,50 +39,50 @@ class Notes(object):
 
 #This function moves the note down on the screen
     def updateNotePos(self, app, dt, difficulty):
-        self.y += app.height * 10 * difficulty * dt/self.timeOnScreen
+        self.y += app.height * difficulty * dt/self.timeOnScreen
 
 
 #Function takes in player input and matches it with the note's x-position,
-    def scoreNote(self, scored):
-        if scored:
+    def scoreNote(self):
+        if not self.scored and abs(self.y-self.scoreHeight) < self.scoreTolerance:
             self.scored = True
             return self.score
-        else:
-            return 0
+        return 0
 
 class Node(Notes):
-    def __init__(self, xPos, noteSize, beat, timeOnScreen, app):
-        super().__init__(xPos, noteSize, beat, timeOnScreen, app)
+    def __init__(self, xPos, noteSize, timeOnScreen, app):
+        super().__init__(xPos, noteSize, timeOnScreen, app)
 
     def scoreNote(self, playerInputs):
         #Check player input algorithm later TODO
         #input1, input2 = playerInput[0], playerInput[1]
-        if abs(self.y - self.scoreHeight) > self.scoreTolerance:
-            return 0
         for input in playerInputs:
-            if self.x == input and not self.scored:
-                return super().scoreNote(True)
-        #return 0 if the player input is not close enough
-            if not self.scored:
-                return super().scoreNote(False)
+            if self.x == input:
+                return super().scoreNote()
         return 0
 
 class Slider(Notes):
-    def __init__(self, xPos, noteSize, beat, timeOnScreen, app, noteLength):
-        super().__init__(xPos, noteSize, beat, timeOnScreen, app, noteLength)
+    def __init__(self, xPos, noteSize, timeOnScreen, app, noteLength):
+        super().__init__(xPos, noteSize, timeOnScreen, app)
         self.noteLength = noteLength
         #TODO Change the time interval that the slider spawns multiople nodes
-        self.scoringNodes = [(Node(xPos, noteSize, beat + i, timeOnScreen, app)) for i in range(noteLength)]
+        self.scoreSections = [[self.y - i * noteSize, False] for i in range(noteLength)]
 
+    def updateNotePos(self, app, dt, difficulty):
+        super().updateNotePos(app, dt, difficulty)
+        for sec in self.scoreSections:
+            sec[0] += app.height * difficulty * dt/self.timeOnScreen
 
-    def scoreNote(self, playerInput):
+    def scoreNote(self, playerInputs):
         #Check player input algorithm later TODO
-        for node in self.scoringNodes:
-            score = node.scoreNote(playerInput)
-            if score != 0:
-                self.scoringNodes.pop(0)
-                return score
-
+        for sec in self.scoreSections:
+            height, scored = sec[0], sec [1]
+            for input in playerInputs:
+                if (not scored and self.x == input and 
+                    abs(height - self.scoreHeight) < self.scoreTolerance):
+                    sec[1] = True
+                    return self.score
+        return 0
 
     def drawNote(self, canvas, offset, cellWidth):
         cx, cy = (self.x - 1)*cellWidth + offset, self.y
@@ -91,12 +90,12 @@ class Slider(Notes):
         r = self.noteSize
         
         x0, x1 = cx, cx + r
-        y0, y1 = cy - (self.noteLength*r/2), cy + r/2
+        y0, y1 = cy - (self.noteLength*r), cy + r/2
         canvas.create_rectangle(x0, y0, x1, y1, fill = 'red')
 
 class SpecialNote(Notes):
-    def __init__(self, xPos, noteSize, time, timeOnScreen, app):
-        super().__init__(0, noteSize, time, timeOnScreen, app)
+    def __init__(self, xPos, noteSize, timeOnScreen, app):
+        super().__init__(0, noteSize, timeOnScreen, app)
 
     def drawNote(self, canvas, color, offset, width):
         
@@ -106,8 +105,8 @@ class SpecialNote(Notes):
         canvas.create_rectangle(offset, cy - r/4, offset + width, cy + r/4, fill = color)
 
 class Jump(SpecialNote):
-    def __init__(self, xPos, noteSize, time, timeOnScreen, app):
-        super().__init__(0, noteSize, time, timeOnScreen, app)
+    def __init__(self, xPos, noteSize, timeOnScreen, app):
+        super().__init__(0, noteSize, timeOnScreen, app)
         
     def drawNote(self, canvas, offset, width):
         color = "blue"
@@ -115,19 +114,13 @@ class Jump(SpecialNote):
 
     def scoreNote(self, playerInputs):
         #Check player input algorithm later TODO
-        if abs(self.y-self.scoreHeight) > self.scoreTolerance:
-            return
-        if len(playerInputs) == 0 and not self.scored:
-                super().scoreNote(True)
-                return self.score
-        #return 0 if the player input is not close enough
-        if not self.scored:
-                super().scoreNote(False)
-                return 0
+        if len(playerInputs) == 0:
+            return super().scoreNote()
+        return 0
 
 class Down(SpecialNote):
-    def __init__(self, xPos, noteSize, time, timeOnScreen, app):
-        super().__init__(0, noteSize, time, timeOnScreen, app)
+    def __init__(self, xPos, noteSize, timeOnScreen, app):
+        super().__init__(0, noteSize, timeOnScreen, app)
 
     def drawNote(self, canvas, offset, width):
         color = "yellow"
@@ -135,12 +128,6 @@ class Down(SpecialNote):
 
     def scoreNote(self, inputs, oldInputs):
         #Check player input algorithm later TODO
-        if abs(self.y-self.scoreHeight) > self.scoreTolerance:
-            return 0
-        if len(inputs) > 0 and () in oldInputs and not self.scored:
-            super().scoreNote(True)
-            return self.score
-        #return 0 if the player input is not close enough
-        if not self.scored:
-            super().scoreNote(False)
-            return 0
+        if len(inputs) > 0 and () in oldInputs:
+            return super().scoreNote()
+        return 0
