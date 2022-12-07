@@ -27,21 +27,61 @@ class Map(object):
         
         #Generates Notes Map
         ########################################################################
+        self.difficulty = difficulty
         self.mapLen = mapLength
         self.timeOnScreen = timeOnScreen
-        self.notesMap = dict()
+        self.leftNotesMap = dict()
+        self.rightNotesMap = dict()
+        
+        self.generateLeftMap(app)
+        self.generateRightMap(app)
+
+        ########################################################################
+
+    def generateLeftMap(self, app):
         skip = 0
-        for beat in range(mapLength):
+        prevNote = None
+        for beat in range(self.mapLen):
             if skip > 0:
                 skip -= 1
                 continue
             note = self.randomNote(app)
+            if prevNote != None:
+                while (isinstance(prevNote, SpecialNote) and isinstance(note, SpecialNote)):
+                    note = self.randomNote(app)
             if type(note) == Slider:
-                skip = note.noteLength - 2
-            self.notesMap [beat] = note
-        #self.cleanNotesMap()
-        ########################################################################
+                skip = note.noteLength
+            self.leftNotesMap [beat] = note
+            prevNote = note
 
+
+    def generateRightMap(self, app):
+        chance = self.difficulty/2 + 1
+        for beat in range(self.mapLen):
+            note = self.randomNode(app)
+
+            placeNote = random.randint(0,int(chance))
+            if placeNote < 2: continue
+
+            if beat not in self.leftNotesMap:
+                self.rightNotesMap [beat] = note
+                continue
+            oldNoteX = self.leftNotesMap[beat].x
+            newNoteX = note.x
+            if isinstance(oldNoteX, SpecialNote):
+                continue
+            while oldNoteX == newNoteX:
+                note = self.randomNode(app)
+                oldNoteX = self.leftNotesMap[beat].x
+                newNoteX = note.x
+            self.rightNotesMap [beat] = note
+
+
+    def randomNode(self, app):
+        noteSize = self.cellWidth
+        xPos = random.randint(1 ,self.numCells)
+        return Node(xPos, noteSize, self.timeOnScreen, app)
+        
     def randomNote(self, app):
         noteType = random.randint(1, 10)
         noteSize = self.cellWidth
@@ -74,9 +114,9 @@ class Map(object):
             #    -make sure there are no notes with the same x position/special notes at all within the length of the slider
 
 
-    def drawNotes(self, canvas, offset):
-        for beat in self.notesMap:
-            note = self.notesMap[beat]
+    def drawNotes(self, canvas, offset, notesMap):
+        for beat in notesMap:
+            note = notesMap[beat]
             if isinstance(note, SpecialNote):
                 noteWidth = self.boardWidth
             else: 
@@ -86,7 +126,8 @@ class Map(object):
     def drawGame(self, canvas):
         self.drawBackground(canvas)
         self.drawBoard(canvas)
-        self.drawNotes(canvas, self.lBorder)
+        self.drawNotes(canvas, self.lBorder, self.rightNotesMap)
+        self.drawNotes(canvas, self.lBorder, self.leftNotesMap)
 
 
     def drawStartScreen(self, canvas):
@@ -101,7 +142,7 @@ class Map(object):
         canvas.create_image(self.width//2, self.height//2, image=ImageTk.PhotoImage(self.bgImage))
 
 
-#Draws the game board that the notes come down on
+    #Draws the game board that the notes come down on
     def drawBoard(self, canvas):
         self.numCells 
         for i in range(len(self.boardCoords) - 1):

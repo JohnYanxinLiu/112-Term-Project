@@ -88,7 +88,7 @@ class Slider(Notes):
         r = self.noteSize
         
         x0, x1 = cx, cx + r
-        y0, y1 = cy - (self.noteLength*r), cy + r/2
+        y0, y1 = cy - (self.noteLength*r), cy + r/4
         canvas.create_rectangle(x0, y0, x1, y1, fill = self.color)
 
 #New Parent class for "Special Notes" (notes with widths of the entire board)###

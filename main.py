@@ -7,11 +7,13 @@ import math
 
 def appStarted(app):
     #in-Game Info###############################################################
-    app.difficulty = 1
+    app.difficulty = 2
     app.timerDelay = 10
-    app.bpm = 30
-    app.numCells = 7
-    app.timeOnScreen = 2
+    app.bpm = 10
+    app.numCells = 8
+    app.timeOnScreen = 3
+    app.mapLength = 200
+    app.difficulty = 3
     ############################################################################
 
     #Calculated game info#######################################################
@@ -21,8 +23,9 @@ def appStarted(app):
     ############################################################################
 
     #Create Notes Map###########################################################
-    app.map = Map(app, 60, app.timeOnScreen, 1, app.numCells)
-    app.notesMap = app.map.notesMap
+    app.map = Map(app, app.mapLength, app.timeOnScreen, app.difficulty, app.numCells)
+    app.leftNotesMap = app.map.leftNotesMap
+    app.rightNotesMap = app.map.rightNotesMap
     ############################################################################
 
     #Initialize Player##########################################################
@@ -43,7 +46,10 @@ def timerFired(app):
     updateGameBeat(app)    
     updateGameTime(app)
     movingNotesKeys = returnMovingNotesRange(app) #Obtains range of keys of notes which will be moved in for loop 
-    updateNotes(app, movingNotesKeys, app.dt)
+    updateNotes(app, app.rightNotesMap, movingNotesKeys, app.dt)
+    updateNotes(app, app.leftNotesMap, movingNotesKeys, app.dt)
+
+
     app.player.updateOldInputs(app.player.inputs)
 
 #Helper function updates the current beat the game is on########################
@@ -60,12 +66,12 @@ def updateGameTime(app):
     app.tOld = app.tNew
 
 #Helper function scores and updates position of notes###########################
-def updateNotes(app, keys, dt):
+def updateNotes(app, map, keys, dt):
     for key in keys: #Loops through all the moving notes
-        if key not in app.notesMap:
+        if key not in map:
             continue #Accounts for sliders taking out beats
 
-        note = app.notesMap[key]
+        note = map[key]
         note.updateNotePos(app, dt, app.difficulty) #Updates the position of each note
         
         score = 0
@@ -76,9 +82,10 @@ def updateNotes(app, keys, dt):
             score = note.scoreNote(app.player.getInputs())
         app.player.updateScore(score)
 
+
 #Helper function returns the keys of only the notes that are moving at a specific point in the game to reduce lag
 def returnMovingNotesRange(app):
-    initialBeat = app.gameBeat - int(app.notesMoving) - 24 #experimentally found a lower initialBeat key is needed
+    initialBeat = app.gameBeat - int(app.notesMoving) - 20 #experimentally found a lower initialBeat key is needed
     finalBeat = app.gameBeat + int(app.notesMoving)
     
     #Clips the initial and final beat to not go out of the bounds of the notes map dictionary
@@ -105,4 +112,4 @@ def redrawAll(app, canvas):
         app.player.drawScore(canvas)
         app.player.drawInputs(canvas, app.height, app.map.lBorder, app.map.cellWidth)
 
-runApp(width=500, height=500)
+runApp(width=600, height=500)
