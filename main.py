@@ -100,7 +100,6 @@ def returnMovingNotesRange(app):
     
     return range(initialBeat, finalBeat)
 
-
 def keyPressed(app, event):
     app.player.holdKey(event)
     if event.key.isalpha:

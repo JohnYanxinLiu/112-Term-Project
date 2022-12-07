@@ -102,7 +102,6 @@ class Map(object):
             key -= 1
         return key
 
-
     def randomNode(self, app):
         noteSize = self.cellWidth
         xPos = random.randint(1 ,self.numCells)
@@ -142,14 +141,16 @@ class Map(object):
         self.drawBackground(canvas)
         x, y = self.width/2, self.height/2
         startMessage = '''
-        Welcome to Dance Rush 112!! \n
+        Welcome to Dance Rush 112!!
+        Use number keys for input
+        hold down for red notes, 
+        press down for yellow notes, 
+        and release keys for blue notes!
             (Press any key to play)'''
         canvas.create_text(x, y, text = startMessage, font = "Arial 15 bold", fill = "white")
     
-
     def drawBackground(self, canvas):
         canvas.create_image(self.width//2, self.height//2, image=ImageTk.PhotoImage(self.bgImage))
-
 
     #Draws the game board that the notes come down on
     def drawBoard(self, canvas):
