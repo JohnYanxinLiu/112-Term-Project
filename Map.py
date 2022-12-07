@@ -38,40 +38,58 @@ class Map(object):
 
         ########################################################################
 
+    #Generates the first map
+    ############################################################################
     def generateLeftMap(self, app):
         skip = 0
         prevNote = None
         for beat in range(self.mapLen):
+            #Skips over beats if there was a slider
             if skip > 0:
                 skip -= 1
                 continue
+            #generates a note
             note = self.randomNote(app)
+            
+            #Does not place another SpecialNote if the previous note was a SpecialNote
             if prevNote != None:
                 while (isinstance(prevNote, SpecialNote) and isinstance(note, SpecialNote)):
                     note = self.randomNote(app)
+
+            #Skips over beats with sliders
             if type(note) == Slider:
                 skip = note.noteLength
+
+            
             self.leftNotesMap [beat] = note
             prevNote = note
 
-
+    #Generates a simultaneous map of just nodes
+    ############################################################################
     def generateRightMap(self, app):
         chance = self.difficulty/2 + 1
         for beat in range(self.mapLen):
             note = self.randomNode(app)
 
+            #randomness aspect of whether a note should be placed or not
             placeNote = random.randint(0,int(chance))
             if placeNote < 2: continue
 
+            #In the case of sliders, obtain the x value of the slider
             if beat not in self.leftNotesMap:
                 oldNoteX = self.leftNotesMap[self.returnSliderBeat()].x
                 self.rightNotesMap [beat] = note
                 continue
             else:
+            #else, obtain the x value of the simultaneous note
                 oldNoteX = self.leftNotesMap[beat].x
             newNoteX = note.x
+            
+            #Don't place a node at the same time as a SpecialNote
             if isinstance(oldNoteX, SpecialNote):
                 continue
+
+            #Generate a new not if the notes overlap
             while oldNoteX == newNoteX:
                 note = self.randomNode(app)
                 oldNoteX = self.leftNotesMap[beat].x

@@ -6,10 +6,7 @@ import time
 import math
 
 def appStarted(app):
-    #Display Info###############################################################
-    app.displaySpeed = 'Medium'
-    app.displayDifficulty = "Medium"
-    ############################################################################
+    
     #in-Game Info###############################################################
     app.difficulty = 2
     app.timerDelay = 10
