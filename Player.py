@@ -10,7 +10,7 @@ class Player(object):
         self.inputs = set()
         self.score = 0
         self.oldInputs = []
-        #keyPRessImg image obtained from https://osu.ppy.sh/community/forums/topics/807428?n=1
+        #keyPressImg image obtained from https://osu.ppy.sh/community/forums/topics/807428?n=1
         keyPressImg = app.loadImage('keyPressImage.png')
         self.keyPressImage = keyPressImg.resize((int(cellWidth) + 20//numKeys, int(app.height)*2), Image.ANTIALIAS)
 

@@ -6,10 +6,14 @@ import time
 import math
 
 def appStarted(app):
+    #Display Info###############################################################
+    app.displaySpeed = 'Medium'
+    app.displayDifficulty = "Medium"
+    ############################################################################
     #in-Game Info###############################################################
     app.difficulty = 2
     app.timerDelay = 10
-    app.bpm = 10
+    app.bpm = 15
     app.numCells = 8
     app.timeOnScreen = 3
     app.mapLength = 200
@@ -43,14 +47,17 @@ def appStarted(app):
 
 def timerFired(app):
     if not app.gameStarted: return #don't begin the game until the game is started
+    runGame(app)
+
+
+def runGame(app):
     updateGameBeat(app)    
     updateGameTime(app)
     movingNotesKeys = returnMovingNotesRange(app) #Obtains range of keys of notes which will be moved in for loop 
     updateNotes(app, app.rightNotesMap, movingNotesKeys, app.dt)
     updateNotes(app, app.leftNotesMap, movingNotesKeys, app.dt)
-
-
     app.player.updateOldInputs(app.player.inputs)
+
 
 #Helper function updates the current beat the game is on########################
 def updateGameBeat(app):
@@ -95,6 +102,7 @@ def returnMovingNotesRange(app):
         finalBeat = app.map.mapLen
     
     return range(initialBeat, finalBeat)
+
 
 def keyPressed(app, event):
     app.player.holdKey(event)

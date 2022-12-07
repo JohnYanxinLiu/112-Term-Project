@@ -49,9 +49,6 @@ class Notes(object):
 class Node(Notes):
     def __init__(self, xPos, noteSize, timeOnScreen, app):
         super().__init__(xPos, noteSize, timeOnScreen, app)
-
-    def getImage(self, app):
-        return app.loadImage('')
     
     def scoreNote(self, playerInputs):
         for input in playerInputs:

@@ -64,9 +64,11 @@ class Map(object):
             if placeNote < 2: continue
 
             if beat not in self.leftNotesMap:
+                oldNoteX = self.leftNotesMap[self.returnSliderBeat()].x
                 self.rightNotesMap [beat] = note
                 continue
-            oldNoteX = self.leftNotesMap[beat].x
+            else:
+                oldNoteX = self.leftNotesMap[beat].x
             newNoteX = note.x
             if isinstance(oldNoteX, SpecialNote):
                 continue
@@ -75,6 +77,12 @@ class Map(object):
                 oldNoteX = self.leftNotesMap[beat].x
                 newNoteX = note.x
             self.rightNotesMap [beat] = note
+
+    def returnSliderBeat(self):
+        key = len(self.leftNotesMap)
+        while key not in self.leftNotesMap:
+            key -= 1
+        return key
 
 
     def randomNode(self, app):
@@ -95,24 +103,6 @@ class Map(object):
             return Jump(0, noteSize, self.timeOnScreen, app)
         if noteType == 1:
             return Down(0, noteSize, self.timeOnScreen, app)
-
-    #Experimental function that cleans up the map of inconsistencies
-    # def cleanNotesMap(self):
-    #     for key in range(len(self.notesMap)):
-    #         note = self.notesMap[key]
-    #         #TODO If approaches end and slider goes past the map, replace slider with node
-    #         if type(note) == Slider:
-    #             hiKey = key + note.noteLength + 1
-    #             if hiKey > self.mapLen:
-    #                 hiKey = self.mapLen
-    #             for newKey in range(key, hiKey):
-    #                 newNote = self.notesMap [newKey]
-    #                 if (isinstance(newNote, SpecialNote) or 
-    #                     newNote.x == note.x):
-    #                     del self.notesMap [newKey]     
-            #if there is a slider
-            #    -make sure there are no notes with the same x position/special notes at all within the length of the slider
-
 
     def drawNotes(self, canvas, offset, notesMap):
         for beat in notesMap:
@@ -137,6 +127,7 @@ class Map(object):
         Welcome to Dance Rush 112!! \n
             (Press any key to play)'''
         canvas.create_text(x, y, text = startMessage, font = "Arial 15 bold", fill = "white")
+    
 
     def drawBackground(self, canvas):
         canvas.create_image(self.width//2, self.height//2, image=ImageTk.PhotoImage(self.bgImage))
